@@ -1,0 +1,8 @@
+---
+- name: Restart node_exporter
+  systemd:
+    name: docker-compose-service@node_exporter
+    enabled: yes
+    state: restarted
+    daemon_reload: yes
+

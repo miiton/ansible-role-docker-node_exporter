@@ -1,0 +1,20 @@
+---
+- name: Create directories
+  file:
+    state: directory
+    path: "{{ item }}"
+    mode: 0755
+  with_items:
+    - /opt/docker-compose-service/node_exporter
+
+- name: Put docker-compose.yml
+  copy:
+    src: docker-compose.yml
+    dest: /opt/docker-compose-service/node_exporter/docker-compose.yml
+  notify: Restart node_exporter
+
+- name: Start node_exporter
+  systemd:
+    name: docker-compose-service@node_exporter
+    enabled: yes
+    state: started
