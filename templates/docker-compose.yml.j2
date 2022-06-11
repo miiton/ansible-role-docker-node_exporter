@@ -1,0 +1,28 @@
+---
+version: "3.8"
+
+services:
+  node_exporter:
+    image: prom/node-exporter
+    container_name: node_exporter
+    command:
+      - "--path.rootfs=/host"
+    network_mode: host
+    pid: host
+    restart: unless-stopped
+    volumes:
+      - "/:/host:ro,rslave"
+{% if loki_host == "" %}
+    logging:
+      options:
+        max-size: "10k"
+        max-file: "5"
+{% else %}
+    logging:
+      driver: loki
+      options:
+        loki-url: https://{{ loki_host }}/loki/api/v1/push
+        loki-tenant-id: {{ loki_tenant_id }}
+        max-size: "10k"
+        max-file: "5"
+{% endif %}
