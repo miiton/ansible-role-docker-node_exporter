@@ -3,13 +3,13 @@ version: "3.8"
 
 services:
   node_exporter:
-    image: prom/node-exporter
+    image: prom/node-exporter:{{ node_exporter_version }}
     container_name: node_exporter
+    restart: unless-stopped
     command:
       - "--path.rootfs=/host"
     network_mode: host
     pid: host
-    restart: unless-stopped
     volumes:
       - "/:/host:ro,rslave"
 {% if loki_host == "" %}
