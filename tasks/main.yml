@@ -18,3 +18,11 @@
     name: docker-compose-service@node_exporter
     enabled: yes
     state: started
+
+- name: Allow incoming traffic on wg0 interface for port 9100
+  ufw:
+    rule: allow
+    interface: "{{ allowed_interface }}"
+    direction: in
+    port: 9100
+  when: allowed_interface is defined and allowed_interface != ""
